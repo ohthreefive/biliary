@@ -233,8 +233,11 @@ final_fit_rf <- last_fit(wf_rf_tuned, split_binary)
 
 # Step 10: Report tuned AUC on test set
 tuned_metrics <- collect_metrics(final_fit_rf)
-cat("\nTuned random forest AUC:", round(tuned_metrics$.estimate[tuned_metrics$.metric == "roc_auc"], 3), "\n")
-cat("(Original random forest AUC was 0.726)\n")
+rf_auc_untuned <- results |>
+  filter(model == "Random forest", .metric == "roc_auc") |>
+  pull(.estimate)
+cat("\nTuned random forest AUC:   ", round(tuned_metrics$.estimate[tuned_metrics$.metric == "roc_auc"], 3), "\n")
+cat("Untuned random forest AUC: ", rf_auc_untuned, "\n")
 
 # ── Tuning visualisation ──────────────────────────────────────────────────────
 

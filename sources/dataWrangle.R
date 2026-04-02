@@ -57,3 +57,7 @@ biliary <- biliary |>
 # TODO: correct in source Excel file when possible and remove this line
 biliary <- biliary |>
   mutate(Weight = if_else(Weight == 7.27, 72.7, Weight))
+
+# ── Cohort subsets ────────────────────────────────────────────────────────────
+
+biliary_malignant <- biliary |> filter(Diagnosis == "Malignant")

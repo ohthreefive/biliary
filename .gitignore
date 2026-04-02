@@ -4,6 +4,7 @@
 .Rproj.user/
 *.Rproj
 Rplots.pdf
+shiny/model.rds
 
 # Quarto
 /.quarto/

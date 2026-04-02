@@ -6,11 +6,9 @@
 # exponentiate = TRUE throughout — results presented as hazard ratios (HR)
 # rather than log(HR). HR > 1 = increased hazard of death; HR < 1 = protective.
 
-biliary_malignant <- biliary |> filter(Diagnosis == "Malignant")
-
 # Select only the variables entering the models; drop 2 rows with missing CRP
 # so all tables and the forest plot use the same consistent dataset.
-# Character variables converted to factors — required by ggforest.
+# Character variables converted to factors — required by coxph.
 biliary_cox_complete <- biliary_malignant |>
   select(Survival, Alive, ageProcedure, Sex, Site, ERCP,
          Hb, WCC, Plts, PT, Urea, Cr, Bili, Alb, CRP) |>
@@ -39,7 +37,7 @@ tbl_uv <- biliary_cox_complete |>
     method       = coxph,
     y            = Surv(Survival, Alive == "No"),
     exponentiate = TRUE,
-    label        = cox_labels,    # reuse shared labels from descriptiveStats.R
+    label        = cox_labels,
     hide_n       = TRUE
   ) |>
   bold_p() |>                     # bold significant p-values

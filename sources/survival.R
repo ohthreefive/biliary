@@ -8,9 +8,6 @@
 #   2. By diagnosis     — all patients (Benign vs Malignant)
 #   3–5. Malignant only — by Sex, Hospital, ERCP
 
-# Subset for malignant patients (used in analyses 3–5)
-biliary_malignant <- biliary |> filter(Diagnosis == "Malignant")
-
 # ── 1. Overall survival ───────────────────────────────────────────────────────
 
 fit_overall <- survfit(

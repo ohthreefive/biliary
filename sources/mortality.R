@@ -1,5 +1,3 @@
-biliary_malignant <- biliary |> filter(Diagnosis == "Malignant")
-
 # ── Mortality rates ───────────────────────────────────────────────────────────
 
 # All patients have >= 99 days follow-up (min daysSince = 99), so no filtering
@@ -79,8 +77,6 @@ chart_mortality
 # Denominator is ALL procedures — this is the clinically meaningful framing:
 # "X% of patients who undergo this procedure will die in hospital."
 # Alive patients contribute to N but have no inpatient death recorded (NA).
-
-n_total <- nrow(biliary)
 
 inpatient_summary <- biliary |>
   group_by(Diagnosis) |>
