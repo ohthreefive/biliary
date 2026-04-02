@@ -256,6 +256,33 @@ chart_vip_tuned <- final_fit_rf |>
 
 chart_vip_tuned
 
+# ── Calibration plot ──────────────────────────────────────────────────────────
+#
+# Tests whether the model's predicted probabilities reflect real-world frequencies.
+# The test set predictions are grouped into 10 bins by predicted probability.
+# Each bin's average predicted probability is plotted against the actual proportion
+# of deaths observed in that bin.
+# The diagonal = perfect calibration. Points above = underconfident; below = overconfident.
+
+cal_data <- predict(fit_rf, test_binary, type = "prob") |>
+  bind_cols(test_binary |> select(died_42))
+
+chart_calibration <- cal_data |>
+  cal_plot_breaks(
+    truth    = died_42,
+    estimate = .pred_Yes,
+    num_breaks = 10
+  ) +
+  labs(
+    title    = "Calibration plot — random forest (42-day mortality)",
+    subtitle = "Points on the diagonal indicate perfect calibration",
+    x        = "Mean predicted probability",
+    y        = "Observed proportion who died within 42 days"
+  ) +
+  theme_minimal()
+
+chart_calibration
+
 # ── Save model for Shiny app ──────────────────────────────────────────────────
 
 # Now that performance has been validated, retrain on the FULL dataset so the
