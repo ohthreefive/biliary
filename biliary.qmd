@@ -1,7 +1,6 @@
 ---
 title: "Biliary Drainage and Stenting: A service evaluation"
 date: "`r Sys.Date()`"
-output-dir: output
 format:
   html:
     toc: true
@@ -20,9 +19,7 @@ knitr:
 ---
 
 ```{r setup}
-#| echo: false
-
-
+#| include: false
 source("sources/libraries.R")
 source("sources/dataWrangle.R")
 source("sources/descriptiveStats.R")

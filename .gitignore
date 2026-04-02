@@ -19,3 +19,5 @@ output/
 
 # Notes
 TODO.md
+
+**/*.quarto_ipynb
