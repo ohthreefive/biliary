@@ -1,0 +1,16 @@
+# R
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+
+# Quarto
+/.quarto/
+*_files/
+*_cache/
+
+# Output
+output/
+
+# macOS
+.DS_Store
