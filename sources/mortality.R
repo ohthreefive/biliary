@@ -76,36 +76,32 @@ chart_mortality
 
 # ── Inpatient mortality ───────────────────────────────────────────────────────
 
-# Inpatient mortality is only meaningful for patients who have died (Alive == "No")
-# Presented as % of all procedures and % of all deaths
+# Denominator is ALL procedures — this is the clinically meaningful framing:
+# "X% of patients who undergo this procedure will die in hospital."
+# Alive patients contribute to N but have no inpatient death recorded (NA).
 
 n_total <- nrow(biliary)
-n_dead  <- sum(biliary$Alive == "No")
 
 inpatient_summary <- biliary |>
-  filter(Alive == "No") |>
   group_by(Diagnosis) |>
   summarise(
-    Deaths          = n(),
-    Inpatient       = sum(`Inpatient mortality` == "Yes", na.rm = TRUE),
-    `% of deaths`   = round(Inpatient / Deaths * 100),
-    `% of total`    = round(Inpatient / n_total * 100)
+    N         = n(),
+    Inpatient = sum(`Inpatient mortality` == "Yes", na.rm = TRUE),
+    `%`       = round(Inpatient / N * 100)
   ) |>
   bind_rows(
     biliary |>
-      filter(Alive == "No") |>
       summarise(
-        Diagnosis      = "Total",
-        Deaths         = n(),
-        Inpatient      = sum(`Inpatient mortality` == "Yes", na.rm = TRUE),
-        `% of deaths`  = round(Inpatient / n() * 100),
-        `% of total`   = round(Inpatient / n_total * 100)
+        Diagnosis = "Total",
+        N         = n(),
+        Inpatient = sum(`Inpatient mortality` == "Yes", na.rm = TRUE),
+        `%`       = round(Inpatient / n() * 100)
       )
   )
 
 table_inpatient <- inpatient_summary |>
   gt() |>
   cols_label(Diagnosis = "") |>
-  tab_header(title = "Inpatient mortality")
+  tab_header(title = "Inpatient mortality (% of all procedures)")
 
 table_inpatient
