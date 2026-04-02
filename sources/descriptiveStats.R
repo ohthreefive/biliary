@@ -20,6 +20,11 @@ normality_results <- map_dfr(continuous_vars, function(var) {
 
 print(normality_results)
 
+# ── Shared ggplot2 theme ──────────────────────────────────────────────────────
+
+# Applied to all charts for consistent Helvetica font and sizing across the document.
+theme_biliary <- theme_minimal(base_family = "Helvetica", base_size = 12)
+
 # ── Shared variable labels ────────────────────────────────────────────────────
 
 # Defined once and reused across all three tables
@@ -67,7 +72,8 @@ table1a <- biliary |>
   bold_labels() |>
   modify_header(label ~ "") |>                         # remove 'Characteristic' header
   as_gt() |>
-  tab_header(title = "Table 1a: Baseline characteristics by hospital")
+  tab_header(title = "Table 1a: Baseline characteristics by hospital") |>
+  tab_options(table.font.names = "Helvetica")
 
 table1a
 
@@ -96,7 +102,8 @@ table1b <- biliary |>
   bold_labels() |>
   modify_header(label ~ "") |>
   as_gt() |>
-  tab_header(title = "Table 1b: Baseline characteristics by sex")
+  tab_header(title = "Table 1b: Baseline characteristics by sex") |>
+  tab_options(table.font.names = "Helvetica")
 
 table1b
 
@@ -125,7 +132,8 @@ table1c <- biliary |>
   bold_labels() |>
   modify_header(label ~ "") |>
   as_gt() |>
-  tab_header(title = "Table 1c: Baseline characteristics by diagnosis")
+  tab_header(title = "Table 1c: Baseline characteristics by diagnosis") |>
+  tab_options(table.font.names = "Helvetica")
 
 table1c
 
@@ -144,7 +152,7 @@ chart_procs_total <- ggplot(procs_per_year, aes(x = Year, y = n)) +
     x     = "Year",
     y     = "Number of procedures"
   ) +
-  theme_minimal()
+  theme_biliary
 
 chart_procs_total
 
@@ -152,13 +160,14 @@ chart_procs_total
 chart_procs_site <- ggplot(procs_per_year_site, aes(x = Year, y = n, fill = Site)) +
   geom_col(position = "dodge") +
   scale_x_continuous(breaks = seq(2015, max(biliary$Year), 1)) +
+  scale_fill_lancet() +
   labs(
     title = "Biliary procedures per year by hospital",
     x     = "Year",
     y     = "Number of procedures",
     fill  = "Hospital"
   ) +
-  theme_minimal()
+  theme_biliary
 
 chart_procs_site
 
@@ -205,9 +214,9 @@ chart_age <- biliary |>
   labs(
     title = "Patient age at procedure",
     x     = "Age (decade)",
-    y     = "Number of patients"
+    y     = "Frequency"
   ) +
-  theme_minimal()
+  theme_biliary
 
 chart_age
 

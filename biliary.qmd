@@ -1,0 +1,198 @@
+---
+title: "Biliary Drainage and Stenting: A service evaluation"
+date: "`r Sys.Date()`"
+output-dir: output
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-float: true
+    theme: flatly
+    embed-resources: true
+knitr:
+  opts_chunk:
+    echo: false
+    warning: false
+    message: false
+    fig-width: 9
+    fig-height: 5
+    out-width: "100%"
+---
+
+```{r setup}
+#| echo: false
+
+
+source("sources/libraries.R")
+source("sources/dataWrangle.R")
+source("sources/descriptiveStats.R")
+source("sources/mortality.R")
+source("sources/survival.R")
+source("sources/regression.R")
+source("sources/machineLearning.R")
+```
+
+## Background
+
+[Brief background on biliary drainage and stenting — indications, clinical context, institutional setting.]
+
+## Methods
+
+Data were collected retrospectively for all biliary drainage and stenting procedures performed at Glasgow Royal Infirmary (GRI) and the Queen Elizabeth University Hospital (QEUH) between `r study_start` and `r study_end`. [Include ethics/audit registration as appropriate.]
+
+Continuous variables are presented as median (IQR) and compared using the Mann-Whitney U test. Categorical variables are presented as n (%) and compared using the chi-squared test. Survival analysis was performed using the Kaplan-Meier method with log-rank testing; multivariable survival analysis used Cox proportional hazards regression. Machine learning models (logistic regression, random forest, XGBoost) were trained on the earliest 80% of procedures and validated on the most recent 20% (temporal validation).
+
+## Results
+
+### Patient cohort
+
+A total of `r nrow(biliary)` procedures were performed across the study period — `r sum(biliary$Site == "GRI")` at GRI and `r sum(biliary$Site == "QEUH")` at QEUH, averaging `r avg_per_month_total` procedures per month overall. `r sum(biliary$Diagnosis == "Malignant")` procedures (`r round(mean(biliary$Diagnosis == "Malignant") * 100)`%) were for malignant obstruction and `r sum(biliary$Diagnosis == "Benign")` (`r round(mean(biliary$Diagnosis == "Benign") * 100)`%) for benign obstruction.
+
+#### Procedures per year
+
+```{r chart-procs-total}
+chart_procs_total
+```
+
+```{r chart-procs-site}
+chart_procs_site
+```
+
+#### Patient demographics
+
+```{r chart-age}
+#| fig-height: 4
+chart_age
+```
+
+### Baseline characteristics
+
+#### By hospital
+
+```{r table1a}
+table1a
+```
+
+#### By sex
+
+```{r table1b}
+table1b
+```
+
+#### By diagnosis
+
+```{r table1c}
+table1c
+```
+
+### Mortality
+
+#### 30-, 42-, and 90-day mortality
+
+```{r table-mortality}
+table_mortality
+```
+
+```{r chart-mortality}
+chart_mortality
+```
+
+#### Inpatient mortality
+
+```{r table-inpatient}
+table_inpatient
+```
+
+#### Mortality by age decade (malignant obstruction)
+
+```{r table-decade-mortality}
+table_decade_mortality
+```
+
+### Survival analysis
+
+Median overall survival was `r median_overall` days.
+
+#### Overall survival
+
+```{r surv-overall}
+#| fig-height: 7
+surv_overall
+```
+
+#### Survival by diagnosis
+
+```{r surv-diagnosis}
+#| fig-height: 7
+surv_diagnosis
+```
+
+The following analyses are restricted to the malignant obstruction cohort (n = `r nrow(biliary_malignant)`). The x-axis is limited to `r median_overall` days (median overall survival) to focus on the clinically relevant early period.
+
+#### Survival by sex
+
+```{r surv-sex}
+#| fig-height: 7
+surv_sex
+```
+
+#### Survival by hospital
+
+```{r surv-hospital}
+#| fig-height: 7
+surv_hospital
+```
+
+#### Survival by prior ERCP
+
+```{r surv-ercp}
+#| fig-height: 7
+surv_ercp
+```
+
+### Cox proportional hazards regression
+
+Multivariable Cox regression was performed in the malignant obstruction cohort (n = `r nrow(biliary_cox_complete)`). Weight was excluded due to incomplete data (~`r round(mean(is.na(biliary_malignant$Weight)) * 100)`% missing).
+
+```{r tbl-cox-merged}
+tbl_cox_merged
+```
+
+```{r chart-cox-forest}
+chart_cox_forest
+```
+
+### Machine learning: 42-day mortality prediction
+
+Three models were trained to predict 42-day mortality using temporal validation (earliest 80% training, most recent 20% test).
+
+```{r table-ml-binary}
+table_ml_binary
+```
+
+#### ROC curves
+
+```{r chart-roc}
+chart_roc_binary
+```
+
+#### Variable importance (random forest)
+
+```{r chart-vip}
+#| fig-height: 6
+chart_vip_rf
+```
+
+#### Model calibration
+
+```{r chart-calibration}
+chart_calibration
+```
+
+## Discussion
+
+[Discussion of key findings.]
+
+## Conclusion
+
+[Conclusions.]

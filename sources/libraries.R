@@ -8,5 +8,6 @@ library(survminer)   # ggsurvplot() for publication-ready survival curves
 library(tidymodels)  # framework for machine learning (splitting, recipes, models, evaluation)
 library(probably)    # calibration plots for ML models
 library(vip)         # variable importance plots
+library(ggsci)       # lancet and other colour palettes
 # tidymodels uses ranger (random forest) and xgboost as engines — install if needed:
 # install.packages(c("ranger", "xgboost"))

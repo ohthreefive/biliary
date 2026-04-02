@@ -22,14 +22,21 @@ median_overall <- surv_median(fit_overall)[1, "median"]
 
 surv_overall <- ggsurvplot(
   fit_overall,
-  data             = biliary,
-  conf.int         = TRUE,
-  risk.table       = TRUE,
-  surv.median.line = "hv",   # horizontal + vertical lines at median survival
-  xlab             = "Days",
-  ylab             = "Survival probability",
-  title            = "Overall survival",
-  ggtheme          = theme_minimal()
+  data              = biliary,
+  conf.int          = TRUE,
+  censor.shape      = 124,
+  risk.table        = "nrisk_cumevents",   # show both number at risk and events
+  surv.median.line  = "hv",                # horizontal + vertical lines at median
+  surv.scale        = "percent",           # y axis as 0–100%
+  xscale            = "d_y",              # convert days to years on x axis
+  break.time.by     = 365.25,             # one break per year
+  xlab              = "Time (years)",
+  ylab              = "Survival (%)",
+  title             = "Overall survival after biliary procedure",
+  legend            = "none",
+  risk.table.y.text = FALSE,              # suppress "Strata" label on risk table
+  palette           = "lancet",
+  ggtheme           = theme_biliary
 )
 
 surv_overall
@@ -43,17 +50,21 @@ fit_diagnosis <- survfit(
 
 surv_diagnosis <- ggsurvplot(
   fit_diagnosis,
-  data             = biliary,
-  conf.int         = TRUE,
-  risk.table       = TRUE,
-  pval             = TRUE,
-  legend.title     = "Diagnosis",
-  xlim             = c(0, median_overall),
-  break.time.by    = 25,
-  xlab             = "Days",
-  ylab             = "Survival probability",
-  title            = "Survival by diagnosis",
-  ggtheme          = theme_minimal()
+  data          = biliary,
+  conf.int      = TRUE,
+  censor.shape  = 124,
+  risk.table    = "nrisk_cumevents",
+  pval          = FALSE,
+  surv.scale    = "percent",
+  legend        = "none",
+  legend.labs   = c("Benign", "Malignant"),   # remove "Diagnosis=" prefix
+  xlim          = c(0, median_overall),
+  break.time.by = 30,
+  xlab          = "Days",
+  ylab          = "Survival (%)",
+  title         = "Survival by diagnosis",
+  palette       = "lancet",
+  ggtheme       = theme_biliary
 )
 
 surv_diagnosis
@@ -71,15 +82,19 @@ surv_sex <- ggsurvplot(
   fit_sex,
   data          = biliary_malignant,
   conf.int      = TRUE,
-  risk.table    = TRUE,
-  pval          = TRUE,
-  legend.title  = "Sex",
+  censor.shape  = 124,
+  risk.table    = "nrisk_cumevents",
+  pval          = FALSE,
+  surv.scale    = "percent",
+  legend        = "none",
+  legend.labs   = c("Man", "Woman"),   # remove "Sex=" prefix
   xlim          = c(0, median_overall),
-  break.time.by = 25,
+  break.time.by = 30,
   xlab          = "Days",
-  ylab          = "Survival probability",
+  ylab          = "Survival (%)",
   title         = "Survival by sex (malignant obstruction)",
-  ggtheme       = theme_minimal()
+  palette       = "lancet",
+  ggtheme       = theme_biliary
 )
 
 surv_sex
@@ -95,15 +110,19 @@ surv_hospital <- ggsurvplot(
   fit_hospital,
   data          = biliary_malignant,
   conf.int      = TRUE,
-  risk.table    = TRUE,
-  pval          = TRUE,
-  legend.title  = "Hospital",
+  censor.shape  = 124,
+  risk.table    = "nrisk_cumevents",
+  pval          = FALSE,
+  surv.scale    = "percent",
+  legend        = "none",
+  legend.labs   = c("GRI", "QEUH"),   # remove "Site=" prefix
   xlim          = c(0, median_overall),
-  break.time.by = 25,
+  break.time.by = 30,
   xlab          = "Days",
-  ylab          = "Survival probability",
+  ylab          = "Survival (%)",
   title         = "Survival by hospital (malignant obstruction)",
-  ggtheme       = theme_minimal()
+  palette       = "lancet",
+  ggtheme       = theme_biliary
 )
 
 surv_hospital
@@ -119,15 +138,19 @@ surv_ercp <- ggsurvplot(
   fit_ercp,
   data          = biliary_malignant,
   conf.int      = TRUE,
-  risk.table    = TRUE,
-  pval          = TRUE,
-  legend.title  = "Prior ERCP",
+  censor.shape  = 124,
+  risk.table    = "nrisk_cumevents",
+  pval          = FALSE,
+  surv.scale    = "percent",
+  legend        = "none",
+  legend.labs   = c("No", "Yes"),   # remove "ERCP=" prefix
   xlim          = c(0, median_overall),
-  break.time.by = 25,
+  break.time.by = 30,
   xlab          = "Days",
-  ylab          = "Survival probability",
-  title         = "Survival by prior ERCP (malignant obstruction)",
-  ggtheme       = theme_minimal()
+  ylab          = "Survival (%)",
+  title         = "Survival by whether prior ERCP performed (malignant obstruction)",
+  palette       = "lancet",
+  ggtheme       = theme_biliary
 )
 
 surv_ercp

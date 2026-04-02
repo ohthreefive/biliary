@@ -115,7 +115,8 @@ table_ml_binary <- results |>
     title    = "Binary classification: 42-day mortality",
     subtitle = "Temporal validation — most recent 20% as test set"
   ) |>
-  fmt_number(columns = -Model, decimals = 3)
+  fmt_number(columns = -Model, decimals = 3) |>
+  tab_options(table.font.names = "Helvetica")
 
 table_ml_binary
 
@@ -142,13 +143,14 @@ roc_curves <- bind_rows(
 chart_roc_binary <- ggplot(roc_curves, aes(x = 1 - specificity, y = sensitivity, colour = model)) +
   geom_line(linewidth = 1) +
   geom_abline(linetype = "dashed", colour = "grey50") +
+  scale_colour_lancet() +
   labs(
     title  = "ROC curves — 42-day mortality prediction",
     x      = "1 - Specificity (false positive rate)",
     y      = "Sensitivity (true positive rate)",
     colour = "Model"
   ) +
-  theme_minimal()
+  theme_biliary
 
 chart_roc_binary
 
@@ -157,11 +159,33 @@ chart_roc_binary
 # Shows which predictors drove the predictions in each model.
 # Using random forest here; can swap to whichever model performs best.
 
+# Pretty labels for variable names after recipe dummy-encoding
+vip_labels <- c(
+  ageProcedure        = "Age",
+  Sex_Woman           = "Sex: Woman",
+  Diagnosis_Malignant = "Diagnosis: Malignant",
+  ERCP_Yes            = "Prior ERCP: Yes",
+  Weight              = "Weight (kg)",
+  Hb                  = "Haemoglobin (g/L)",
+  WCC                 = "White cell count (×10^9/L)",
+  Plts                = "Platelets (×10^9/L)",
+  PT                  = "Prothrombin time (s)",
+  Urea                = "Urea (mmol/L)",
+  Cr                  = "Creatinine (µmol/L)",
+  Bili                = "Bilirubin (µmol/L)",
+  Alb                 = "Albumin (g/L)",
+  CRP                 = "CRP (mg/L)"
+)
+
 chart_vip_rf <- fit_rf |>
   extract_fit_parsnip() |>
   vip(num_features = 15) +
-  labs(title = "Variable importance — random forest (42-day mortality)") +
-  theme_minimal()
+  scale_y_discrete(labels = vip_labels) +
+  labs(
+    title = "Variable importance — random forest model (42-day mortality)",
+    x     = "Importance (units)"
+  ) +
+  theme_biliary
 
 chart_vip_rf
 
@@ -245,7 +269,7 @@ cat("Untuned random forest AUC: ", rf_auc_untuned, "\n")
 # the parameter space works best.
 chart_tune <- autoplot(rf_tune_results) +
   labs(title = "Random forest tuning — AUC across hyperparameter grid") +
-  theme_minimal()
+  theme_biliary
 
 chart_tune
 
@@ -254,8 +278,12 @@ chart_tune
 chart_vip_tuned <- final_fit_rf |>
   extract_fit_parsnip() |>
   vip(num_features = 15) +
-  labs(title = "Variable importance — tuned random forest (42-day mortality)") +
-  theme_minimal()
+  scale_y_discrete(labels = vip_labels) +
+  labs(
+    title = "Variable importance — tuned random forest model (42-day mortality)",
+    x     = "Importance (units)"
+  ) +
+  theme_biliary
 
 chart_vip_tuned
 
@@ -276,13 +304,16 @@ chart_calibration <- cal_data |>
     estimate = .pred_Yes,
     num_breaks = 10
   ) +
+  scale_x_continuous(labels = scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
+  coord_cartesian(xlim = c(0, 0.75)) +
   labs(
-    title    = "Calibration plot — random forest (42-day mortality)",
-    subtitle = "Points on the diagonal indicate perfect calibration",
-    x        = "Mean predicted probability",
-    y        = "Observed proportion who died within 42 days"
+    title   = "Calibration plot — random forest model (42-day mortality)",
+    caption = "Points on the diagonal indicate perfect calibration",
+    x       = "Mean predicted probability (%)",
+    y       = "Observed 42-day mortality (%)"
   ) +
-  theme_minimal()
+  theme_biliary
 
 chart_calibration
 

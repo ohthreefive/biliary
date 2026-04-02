@@ -39,8 +39,8 @@ mortality_summary <- bind_rows(mortality_by_diag, mortality_total)
 table_mortality <- mortality_summary |>
   gt() |>
   cols_label(Diagnosis = "") |>
-  tab_header(title = "Mortality rates (% of all procedures)") |>
-  tab_spanner(label = "Mortality (%)", columns = -Diagnosis)
+  tab_header(title = "Mortality rate at timepoints (%)") |>
+  tab_options(table.font.names = "Helvetica")
 
 table_mortality
 
@@ -62,13 +62,14 @@ chart_mortality <- ggplot(
     vjust     = -0.4,
     size      = 3.5
   ) +
+  scale_fill_lancet() +
   labs(
     title = "Mortality by diagnosis and timepoint",
     x     = "Timepoint",
     y     = "Mortality (%)",
     fill  = "Diagnosis"
   ) +
-  theme_minimal()
+  theme_biliary
 
 chart_mortality
 
@@ -97,8 +98,9 @@ inpatient_summary <- biliary |>
 
 table_inpatient <- inpatient_summary |>
   gt() |>
-  cols_label(Diagnosis = "") |>
-  tab_header(title = "Inpatient mortality (% of all procedures)")
+  cols_label(Diagnosis = "", Inpatient = "Inpatient deaths") |>
+  tab_header(title = "Inpatient mortality") |>
+  tab_options(table.font.names = "Helvetica")
 
 table_inpatient
 
@@ -120,8 +122,9 @@ decade_mortality <- biliary_malignant |>
 
 table_decade_mortality <- decade_mortality |>
   gt() |>
-  cols_label(Decade = "Age decade", N = "N") |>
+  cols_label(Decade = "Decade", N = "N") |>
   tab_spanner(label = "Mortality (%)", columns = c(`30-day`, `42-day`, `90-day`)) |>
-  tab_header(title = "Mortality by age decade — malignant obstruction")
+  tab_header(title = "Mortality by age (malignant obstruction)") |>
+  tab_options(table.font.names = "Helvetica")
 
 table_decade_mortality

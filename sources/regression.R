@@ -72,7 +72,8 @@ tbl_cox_merged <- tbl_merge(
   tab_spanner = c("**Univariable**", "**Multivariable**")
 ) |>
   as_gt() |>
-  tab_header(title = "Cox proportional hazards regression — malignant obstruction")
+  tab_header(title = "Cox proportional hazards regression (malignant obstruction)") |>
+  tab_options(table.font.names = "Helvetica")
 
 tbl_cox_merged
 
@@ -89,8 +90,8 @@ cox_forest_data <- broom::tidy(fit_cox, exponentiate = TRUE, conf.int = TRUE) |>
     "SiteQEUH"      = "Hospital: QEUH",
     "ERCPYes"       = "Prior ERCP: Yes",
     "Hb"            = "Haemoglobin (g/L)",
-    "WCC"           = "White cell count (×10⁹/L)",
-    "Plts"          = "Platelets (×10⁹/L)",
+    "WCC"           = "White cell count (×10^9/L)",
+    "Plts"          = "Platelets (×10^9/L)",
     "PT"            = "Prothrombin time (seconds)",
     "Urea"          = "Urea (mmol/L)",
     "Cr"            = "Creatinine (µmol/L)",
@@ -109,6 +110,6 @@ chart_cox_forest <- ggplot(cox_forest_data, aes(x = estimate, y = term)) +
     x     = "Hazard ratio (95% CI)",
     y     = NULL
   ) +
-  theme_minimal()
+  theme_biliary
 
 chart_cox_forest
