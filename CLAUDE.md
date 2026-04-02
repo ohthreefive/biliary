@@ -25,6 +25,7 @@ biliary/
 │   ├── libraries.R      # All library() calls
 │   ├── dataWrangle.R    # Data cleaning and transformation
 │   ├── descriptiveStats.R
+│   ├── mortality.R      # 30/42/90-day and inpatient mortality (added outside original plan)
 │   ├── survival.R
 │   ├── regression.R
 │   └── machineLearning.R

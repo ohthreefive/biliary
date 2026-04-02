@@ -3,6 +3,7 @@
 .RData
 .Rproj.user/
 *.Rproj
+Rplots.pdf
 
 # Quarto
 /.quarto/

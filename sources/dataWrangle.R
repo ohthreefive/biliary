@@ -52,3 +52,10 @@ biliary <- biliary |>
   ) |>
   # Drop the original Diag column now that Diagnosis exists
   select(-Diag)
+
+# ── Data corrections ──────────────────────────────────────────────────────────
+
+# Weight of 7.27 kg is a data entry error — should be 72.7 kg
+# TODO: correct in source Excel file when possible and remove this line
+biliary <- biliary |>
+  mutate(Weight = if_else(Weight == 7.27, 72.7, Weight))
