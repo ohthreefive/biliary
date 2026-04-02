@@ -255,3 +255,25 @@ chart_vip_tuned <- final_fit_rf |>
   theme_minimal()
 
 chart_vip_tuned
+
+# ── Save model for Shiny app ──────────────────────────────────────────────────
+
+# Now that performance has been validated, retrain on the FULL dataset so the
+# deployed model has seen as much data as possible.
+# The workflow (recipe + model) is saved as a single object — the Shiny app
+# loads this and calls predict() directly without needing any preprocessing steps.
+
+final_model <- fit(wf_rf, data = ml_binary)
+
+# Calculate baseline 42-day mortality rates from the full dataset.
+# Saved alongside the model so the Shiny app always reflects current data.
+baselines <- biliary |>
+  summarise(
+    overall   = round(sum(Alive == "No" & Survival <= 42) / n() * 100),
+    benign    = round(sum(Alive == "No" & Survival <= 42 & Diagnosis == "Benign")    / sum(Diagnosis == "Benign")    * 100),
+    malignant = round(sum(Alive == "No" & Survival <= 42 & Diagnosis == "Malignant") / sum(Diagnosis == "Malignant") * 100)
+  )
+
+saveRDS(list(model = final_model, baselines = baselines), "shiny/model.rds")
+cat("Model and baselines saved to shiny/model.rds\n")
+cat("Baselines — overall:", baselines$overall, "% | benign:", baselines$benign, "% | malignant:", baselines$malignant, "%\n")
