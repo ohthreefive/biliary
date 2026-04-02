@@ -1,5 +1,7 @@
 source("sources/dataWrangle.R")
 
+biliary_malignant <- biliary |> filter(Diagnosis == "Malignant")
+
 # ── Mortality rates ───────────────────────────────────────────────────────────
 
 # All patients have >= 99 days follow-up (min daysSince = 99), so no filtering
@@ -105,3 +107,27 @@ table_inpatient <- inpatient_summary |>
   tab_header(title = "Inpatient mortality (% of all procedures)")
 
 table_inpatient
+
+# ── Mortality by age decade (malignant cohort) ────────────────────────────────
+
+# Prompted by Cox regression finding that age had little independent effect.
+# Decade factor levels set explicitly to ensure correct ordering in the table.
+
+decade_mortality <- biliary_malignant |>
+  mutate(Decade = factor(Decade, levels = paste0(seq(10, 90, 10), "s"))) |>
+  group_by(Decade) |>
+  summarise(
+    N        = n(),
+    `30-day` = round(sum(Alive == "No" & Survival <= 30) / n() * 100),
+    `42-day` = round(sum(Alive == "No" & Survival <= 42) / n() * 100),
+    `90-day` = round(sum(Alive == "No" & Survival <= 90) / n() * 100)
+  ) |>
+  arrange(Decade)
+
+table_decade_mortality <- decade_mortality |>
+  gt() |>
+  cols_label(Decade = "Age decade", N = "N") |>
+  tab_spanner(label = "Mortality (%)", columns = c(`30-day`, `42-day`, `90-day`)) |>
+  tab_header(title = "Mortality by age decade — malignant obstruction")
+
+table_decade_mortality
