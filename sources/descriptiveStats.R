@@ -162,6 +162,21 @@ chart_procs_site <- ggplot(procs_per_year_site, aes(x = Year, y = n, fill = Site
 
 chart_procs_site
 
+# ── Study period dates (in-text figures) ─────────────────────────────────────
+
+# Format a date as e.g. "1st Jan 1970"
+ordinal_date <- function(date) {
+  day    <- as.integer(format(date, "%d"))
+  suffix <- ifelse(day %in% c(11, 12, 13), "th",
+            ifelse(day %% 10 == 1, "st",
+            ifelse(day %% 10 == 2, "nd",
+            ifelse(day %% 10 == 3, "rd", "th"))))
+  paste0(day, suffix, " ", format(date, "%b %Y"))
+}
+
+study_start <- ordinal_date(min(biliary$eventDate))
+study_end   <- ordinal_date(max(biliary$eventDate))
+
 # ── Average procedures per month (in-text figures) ───────────────────────────
 
 # Calculate total number of months spanned by the dataset
