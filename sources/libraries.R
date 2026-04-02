@@ -5,3 +5,7 @@ library(gt)          # formatted tables
 library(gtsummary)   # publication-ready summary/Table 1 tables
 library(survival)    # Surv() and survfit() for Kaplan-Meier analysis
 library(survminer)   # ggsurvplot() for publication-ready survival curves
+library(tidymodels)  # framework for machine learning (splitting, recipes, models, evaluation)
+library(vip)         # variable importance plots
+# tidymodels uses ranger (random forest) and xgboost as engines — install if needed:
+# install.packages(c("ranger", "xgboost"))
