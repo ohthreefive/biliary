@@ -1,5 +1,3 @@
-source("sources/dataWrangle.R")
-
 biliary_malignant <- biliary |> filter(Diagnosis == "Malignant")
 
 # ── Mortality rates ───────────────────────────────────────────────────────────

@@ -1,5 +1,3 @@
-source("sources/libraries.R")
-
 # ── Import ────────────────────────────────────────────────────────────────────
 
 biliary <- read_excel("data/biliary.xlsx")

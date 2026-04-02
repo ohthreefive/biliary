@@ -1,5 +1,3 @@
-source("sources/dataWrangle.R")
-
 # ── Normality testing ─────────────────────────────────────────────────────────
 
 # Shapiro-Wilk test on all continuous variables
