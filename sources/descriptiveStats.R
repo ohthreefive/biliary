@@ -25,6 +25,8 @@ print(normality_results)
 # Applied to all charts for consistent Helvetica font and sizing across the document.
 theme_biliary <- theme_minimal(base_family = "Helvetica", base_size = 12)
 
+lancet_blue <- "#0C4786"
+
 # ── Shared variable labels ────────────────────────────────────────────────────
 
 # Defined once and reused across all three tables
@@ -145,7 +147,7 @@ procs_per_year_site  <- biliary |> count(Year, Site)
 
 # Total procedures per year — column chart
 chart_procs_total <- ggplot(procs_per_year, aes(x = Year, y = n)) +
-  geom_col(fill = "steelblue") +
+  geom_col(fill = lancet_blue, alpha = 0.9) +
   scale_x_continuous(breaks = seq(2015, max(biliary$Year), 1)) +
   labs(
     title = "Biliary procedures per year",
@@ -160,7 +162,7 @@ chart_procs_total
 chart_procs_site <- ggplot(procs_per_year_site, aes(x = Year, y = n, fill = Site)) +
   geom_col(position = "dodge") +
   scale_x_continuous(breaks = seq(2015, max(biliary$Year), 1)) +
-  scale_fill_lancet() +
+  scale_fill_lancet(alpha = 0.9) +
   labs(
     title = "Biliary procedures per year by hospital",
     x     = "Year",
@@ -210,7 +212,7 @@ biliary |>
 chart_age <- biliary |>
   mutate(Decade = factor(Decade, levels = paste0(seq(10, 90, 10), "s"))) |>
   ggplot(aes(x = Decade)) +
-  geom_bar(fill = "steelblue") +
+  geom_bar(fill = lancet_blue, alpha = 0.9) +
   labs(
     title = "Patient age at procedure",
     x     = "Age (decade)",
