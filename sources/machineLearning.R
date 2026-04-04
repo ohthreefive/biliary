@@ -180,12 +180,16 @@ vip_labels <- c(
 chart_vip_rf <- fit_rf |>
   extract_fit_parsnip() |>
   vip(num_features = 15) +
-  scale_y_discrete(labels = vip_labels) +
+  scale_x_discrete(labels = vip_labels) +
   labs(
     title = "Variable importance — random forest model (42-day mortality)",
     x     = "Importance (units)"
   ) +
   theme_biliary
+
+# change aesthetics a different way as vip() doesn't work exactly like ggplot()
+chart_vip_rf$layers[[1]]$aes_params$alpha <- 0.9
+chart_vip_rf$layers[[1]]$aes_params$fill  <- lancet_blue
 
 chart_vip_rf
 
@@ -314,6 +318,15 @@ chart_calibration <- cal_data |>
     y       = "Observed 42-day mortality (%)"
   ) +
   theme_biliary
+
+# Points (usually layer 3)
+chart_calibration$layers[[3]]$aes_params$colour <- lancet_blue
+chart_calibration$layers[[3]]$aes_params$alpha  <- 0.9
+
+# Line (usually layer 2)
+chart_calibration$layers[[2]]$aes_params$colour <- lancet_blue
+chart_calibration$layers[[2]]$aes_params$alpha  <- 0.9
+
 
 chart_calibration
 
