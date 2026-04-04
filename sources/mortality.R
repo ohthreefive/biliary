@@ -62,7 +62,7 @@ chart_mortality <- ggplot(
     vjust     = -0.4,
     size      = 3.5
   ) +
-  scale_fill_lancet() +
+  scale_fill_lancet(alpha = 0.9) +
   labs(
     title = "Mortality by diagnosis and timepoint",
     x     = "Timepoint",

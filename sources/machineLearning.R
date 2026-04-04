@@ -183,7 +183,7 @@ chart_vip_rf <- fit_rf |>
   scale_x_discrete(labels = vip_labels) +
   labs(
     title = "Variable importance — random forest model (42-day mortality)",
-    x     = "Importance (units)"
+    y     = "Importance (units)"
   ) +
   theme_biliary
 
@@ -285,7 +285,7 @@ chart_vip_tuned <- final_fit_rf |>
   scale_y_discrete(labels = vip_labels) +
   labs(
     title = "Variable importance — tuned random forest model (42-day mortality)",
-    x     = "Importance (units)"
+    y     = "Importance (units)"
   ) +
   theme_biliary
 
