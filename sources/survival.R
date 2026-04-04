@@ -29,12 +29,13 @@ surv_overall <- ggsurvplot(
   surv.median.line  = "hv",                # horizontal + vertical lines at median
   surv.scale        = "percent",           # y axis as 0–100%
   xscale            = "d_y",              # convert days to years on x axis
-  break.time.by     = 365.25,             # one break per year
+  break.time.by     = 730.5,             # one break per year
   xlab              = "Time (years)",
   ylab              = "Survival (%)",
   title             = "Overall survival after biliary procedure",
   legend            = "none",
-  risk.table.y.text = FALSE,              # suppress "Strata" label on risk table
+  legend.title      = "",
+  legend.labs       = "",
   palette           = "lancet",
   ggtheme           = theme_biliary
 )
@@ -58,6 +59,7 @@ surv_diagnosis <- ggsurvplot(
   surv.scale    = "percent",
   legend        = "none",
   legend.labs   = c("Benign", "Malignant"),   # remove "Diagnosis=" prefix
+  legend.title  = "",
   xlim          = c(0, median_overall),
   break.time.by = 30,
   xlab          = "Days",
@@ -88,6 +90,7 @@ surv_sex <- ggsurvplot(
   surv.scale    = "percent",
   legend        = "none",
   legend.labs   = c("Man", "Woman"),   # remove "Sex=" prefix
+  legend.title  = "",
   xlim          = c(0, median_overall),
   break.time.by = 30,
   xlab          = "Days",
@@ -116,6 +119,7 @@ surv_hospital <- ggsurvplot(
   surv.scale    = "percent",
   legend        = "none",
   legend.labs   = c("GRI", "QEUH"),   # remove "Site=" prefix
+  legend.title  = "",
   xlim          = c(0, median_overall),
   break.time.by = 30,
   xlab          = "Days",
@@ -144,6 +148,7 @@ surv_ercp <- ggsurvplot(
   surv.scale    = "percent",
   legend        = "none",
   legend.labs   = c("No", "Yes"),   # remove "ERCP=" prefix
+  legend.title  = "",
   xlim          = c(0, median_overall),
   break.time.by = 30,
   xlab          = "Days",
