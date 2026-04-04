@@ -20,6 +20,10 @@ knitr:
 
 ```{r setup}
 #| include: false
+#| cache: true
+
+# NB use this to render: quarto render biliary.qmd --output-dir "output"
+
 source("sources/libraries.R")
 source("sources/dataWrangle.R")
 source("sources/descriptiveStats.R")
