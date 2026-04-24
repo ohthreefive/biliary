@@ -2,7 +2,7 @@ library(shiny)
 library(tidymodels)
 
 # Load the trained model and baseline rates (both saved by machineLearning.R)
-saved     <- readRDS("model.rds")
+saved     <- readRDS("shiny/model.rds")
 model     <- saved$model
 baselines <- saved$baselines
 
