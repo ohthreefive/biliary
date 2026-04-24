@@ -28,8 +28,8 @@ surv_overall <- ggsurvplot(
   risk.table        = "nrisk_cumevents",   # show both number at risk and events
   surv.median.line  = "hv",                # horizontal + vertical lines at median
   surv.scale        = "percent",           # y axis as 0–100%
-  xscale            = "d_y",              # convert days to years on x axis
-  break.time.by     = 730.5,             # one break per year
+  xscale            = "d_y",               # convert days to years on x axis
+  break.time.by     = 730.5,               # one break per year
   xlab              = "Time (years)",
   ylab              = "Survival (%)",
   title             = "Overall survival after biliary procedure",
